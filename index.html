@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Santa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://via.placeholder.com/1500x1000/ffcccc/000000?text=Merry+Christmas') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .number {
+            background: #f44336;
+            color: white;
+            font-size: 1.5em;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+        .number:hover {
+            transform: scale(1.1);
+            background: #d32f2f;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .message {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #ff3b3b;
+        }
+    </style>
+</head>
+<body>
+    <h1>You are the Secret Santa of</h1>
+    <p>Choose a number to reveal your Secret Santa!</p>
+    <div id="grid" class="grid"></div>
+    <p id="message" class="message"></p>
+
+    <script>
+        const names = [
+            "Amit Sir", "Vikash Sir", "Sumanta", "Ila Madam", "Manoj", "Jasmin", "Mausumi", "Itishree", "Muskan", "Suraj", 
+            "Nishu", "Subhashree", "Raghu", "Mohit", "Gouttam", "Aurobinda", "Ankita Mam", "Ajay", "Mahaveer", "Aiswarya", 
+            "Shuvam", "Sushshree", "Smrutikanta"
+        ];
+
+        const grid = document.getElementById("grid");
+        const message = document.getElementById("message");
+
+        const numbers = Array.from({ length: names.length }, (_, i) => i + 1); // Numbers array
+        let hasChosen = false; // Track if the user has already chosen a number
+
+        function renderGrid() {
+            grid.innerHTML = ""; // Clear the grid
+            numbers.forEach((num, index) => {
+                if (num !== null) {
+                    const numberDiv = document.createElement("div");
+                    numberDiv.className = "number";
+                    numberDiv.textContent = num;
+                    numberDiv.onclick = () => revealName(index);
+                    grid.appendChild(numberDiv);
+                }
+            });
+        }
+
+        function revealName(index) {
+            if (hasChosen) {
+                alert("You can only choose one number!"); // Alert if the user tries to choose again
+                return;
+            }
+
+            if (numbers[index] !== null) {
+                const selectedName = names[index]; // Get the corresponding name
+                message.textContent = `🎁 You got: ${selectedName}! 🎁`;
+                numbers[index] = null; // Remove the number from the array
+                hasChosen = true; // Mark that the user has made their choice
+                renderGrid(); // Update the grid
+            }
+        }
+
+        renderGrid(); // Initial render of the grid
+    </script>
+</body>
+</html>
